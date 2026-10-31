@@ -121,3 +121,6 @@
   .hero-copy,.mobile-family,.progress-card{z-index:1;}
 }
 @media(max-width:359px){.hero::before{display:none}}
+
+/* The header already has Share; avoid a clipped duplicate on the narrowest phones. */
+@media(max-width:359px){.main-nav button[data-share]{display:none}}
