@@ -1,0 +1,25 @@
+name: Test Gift Manager
+on:
+  push:
+    branches: [feature/manage-gifts]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Validate server and browser JavaScript
+        run: |
+          node --check api/manage.js
+          node --check manage.js
+          node --check app.js
+          node tests/manage_api_test.cjs
+      - name: Install browser tests
+        run: |
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Verify design and manager
+        run: |
+          python tests/browser_check.py --output qa-existing-site
+          python tests/manage_browser_check.py
