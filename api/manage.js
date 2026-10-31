@@ -41,7 +41,12 @@ function equals(a,b) {
   return timingSafeEqual(x,y);
 }
 function signature(value) {
-  return createHmac('sha256', process.env.REGISTRY_SESSION_SECRET).update(value).digest('base64url');
+  // Device recognition stays stable, but changing the admin password revokes active sessions.
+  const sessionBound=value.startsWith('session:')||value.startsWith('csrf:');
+  const key=sessionBound?createHmac('sha256',process.env.REGISTRY_SESSION_SECRET)
+    .update('password-bound-session:'+process.env.REGISTRY_ADMIN_PASSWORD).digest()
+    :process.env.REGISTRY_SESSION_SECRET;
+  return createHmac('sha256',key).update(value).digest('base64url');
 }
 function cookies(req) {
   return Object.fromEntries(String(req.headers.cookie||'').split(';').map(x=>x.trim()).filter(Boolean).map(x=>{
@@ -220,7 +225,7 @@ module.exports=async function handler(req,res) {
       const password=typeof data.password==='string'?data.password:'';
       if(password.length>256||!equals(password,process.env.REGISTRY_ADMIN_PASSWORD))return json(res,401,{error:'Incorrect password'});
       const session=setSession(req,res);
-      return json(res,200,{ok:true,csrf:session.csrf,day:session.day,rememberedDevice:!(!device(req))});
+      return json(res,200,{ok:true,csrf:session.csrf,day:session.day,rememberedDevice:true});
     }
     if(req.method==='GET'&&action==='session'){
       const sessionToken=token(req);
