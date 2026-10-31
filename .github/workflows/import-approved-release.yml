@@ -29,9 +29,11 @@ jobs:
         run: |
           python - <<'PY'
           import urllib.request,hashlib,zipfile,io,json,pathlib
-          data=urllib.request.urlopen('https://sb-2uusk0ib8kmr.vercel.run/release.zip',timeout=60).read()
-          assert len(data)==2333279
-          assert hashlib.sha256(data).hexdigest()=='82e90c927c998c1460abfa96d1f0e43d524385c0d6a8c9cdbbf3ac4334248a78'
+          data=urllib.request.urlopen('https://sb-3eodvxiorh5r.vercel.run/release.zip',timeout=60).read()
+          assert len(data)==2333507
+          assert hashlib.sha256(data).hexdigest()=='e8d8b870e49a444de6ea310d9acac31fbd0f742428b17359d605c3c72ce55ef5'
+          pathlib.Path('qa-acceptance').mkdir(exist_ok=True)
+          pathlib.Path('qa-acceptance/verified-source.zip').write_bytes(data)
           with zipfile.ZipFile(io.BytesIO(data)) as z:
               manifest=json.loads(z.read('release-manifest.json'))
               assert set(z.namelist())==set(manifest)|{'release-manifest.json'}
@@ -56,15 +58,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: approved-reference-browser-verification
+          name: approved-reference-browser-verification-v2
           path: qa-acceptance
           retention-days: 14
       - name: Commit verified source to the feature branch
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          rm -f .github/workflows/import-approved-release.yml .github/workflows/parity-capture.yml
-          git add index.html styles.css app.js README.md data assets/approved docs tests release-manifest.json .github/workflows
+          git add index.html styles.css app.js README.md data assets/approved docs tests release-manifest.json
           git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Rebuild registry from exact approved artwork with seven-width browser verification'
           python - <<'PY'
           import os,subprocess,base64
