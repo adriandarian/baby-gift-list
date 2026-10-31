@@ -4,6 +4,9 @@ on:
     branches: [design/crisp-approved-lettering]
     paths:
       - scripts/vectorize_type.py
+      - app.js
+      - styles.css
+      - index.html
       - .github/workflows/vector-lettering.yml
 permissions:
   contents: write
