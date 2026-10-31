@@ -15,13 +15,11 @@ A warm, woodland-themed baby gift registry website for family and friends.
 
 Open `index.html` in a browser. No dependencies are required. Internet access is only needed to load Google Fonts and external shopping pages.
 
-## Deploy with GitHub Pages
+## Deploy with Vercel
 
-A GitHub Actions Pages deployment workflow is included. In your repository's **Settings → Pages**, set **Source** to **GitHub Actions**. The workflow publishes the site when a commit lands on `main`.
+The site is deployed to **https://baby-gift-list.vercel.app** on Vercel, with GitHub repository `adriandarian/baby-gift-list` linked to the Vercel project. Production deployments use the `main` branch.
 
-The expected site address, after Pages is enabled and the deployment completes, is:
-
-https://adriandarian.github.io/baby-gift-list/
+This is a static HTML/CSS/JavaScript site with no build command or environment variables required. Vercel's deployment protection has been disabled for family and friends to view the site.
 
 ## Keeping the registry accurate
 
