@@ -130,8 +130,9 @@
       ],
       "width": 57,
       "height": 56,
-      "bytes": 1202,
-      "sha256": "537cc385b26d660b0ec580ff9b245bdc63f42943fcc509a1988a8e33e04d4e35"
+      "bytes": 618,
+      "sha256": "11f636c532a5310e53dd44e79066d683e39a3bfc3d1c6e385556b1663e996055",
+      "cleanup": "Retain only the original tree; remove disconnected adjacent UI pixels."
     },
     "right-edge-tree": {
       "source_crop": [
