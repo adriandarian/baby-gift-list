@@ -28,10 +28,10 @@
       <p>Make the GitHub token fine-grained, limited to the <code>baby-gift-list</code> repository with <strong>Contents: Read and write</strong>. Use a strong password (16+ characters) and a separate randomly generated session secret (32+ characters). Never paste them into the public repository.</p>
     </section>
     <section class="card auth-card" id="login-panel" hidden>
-      <div class="lock" aria-hidden="true">🔒</div><h2>Family manager sign-in</h2><p>Only people with the manager password can make changes.</p>
-      <form id="login-form">
+      <div class="lock" aria-hidden="true">🔒</div><h2>Family manager sign-in</h2><p id="login-intro">Enter your manager password to manage gifts.</p><p class="daily-login-note" id="daily-login-note">For your security, access resets at midnight Pacific Time.</p>
+      <form id="login-form" autocomplete="off">
         <label for="login-password">Manager password</label>
-        <input id="login-password" name="password" type="password" autocomplete="current-password" minlength="16" required>
+        <input id="login-password" name="password" type="password" autocomplete="off" minlength="16" required>
         <button type="submit" class="btn primary">Sign in</button>
       </form>
     </section>
