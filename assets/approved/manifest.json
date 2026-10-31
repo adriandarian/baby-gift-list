@@ -1,0 +1,594 @@
+{
+  "source_sha256": "4a814417f79e5d8458a1b0271a64d9ffee74f1e89aaa6afbed63c64a1c93f715",
+  "source_size": [
+    1448,
+    1086
+  ],
+  "viewport_crop": [
+    9,
+    44,
+    1439,
+    1078
+  ],
+  "assets": {
+    "brand": {
+      "source_crop": [
+        39,
+        49,
+        315,
+        108
+      ],
+      "width": 276,
+      "height": 59,
+      "bytes": 16624,
+      "sha256": "952bc1968703cb4905b9f4e77275e878208d0189457617741f91e7838370ff62"
+    },
+    "headline": {
+      "source_crop": [
+        145,
+        127,
+        558,
+        216
+      ],
+      "width": 413,
+      "height": 89,
+      "bytes": 33014,
+      "sha256": "aa8fa072533570a6c6eb4ba77602b7c9e64dc2d91f7549287894eba2d2f62fe0"
+    },
+    "browse-heading": {
+      "source_crop": [
+        544,
+        415,
+        903,
+        452
+      ],
+      "width": 359,
+      "height": 37,
+      "bytes": 14696,
+      "sha256": "604d7be5825356f9198d7781f8d9536bcff7a218f61600482b7d7b09a7b668f9"
+    },
+    "thank-you": {
+      "source_crop": [
+        647,
+        943,
+        836,
+        987
+      ],
+      "width": 189,
+      "height": 44,
+      "bytes": 8748,
+      "sha256": "c9575b1c558bf426dfac44eeef045330d04f353a48dd2d3def4ce8d1aec662ab"
+    },
+    "hero-scene": {
+      "source_crop": [
+        9,
+        110,
+        1439,
+        404
+      ],
+      "ui_removed": true,
+      "width": 1430,
+      "height": 294,
+      "bytes": 84312,
+      "sha256": "88cfd0259d5bbafef369c937f599640d330124194cecd4f631a628be724dcb78"
+    },
+    "left-foliage": {
+      "source_crop": [
+        9,
+        110,
+        151,
+        404
+      ],
+      "width": 142,
+      "height": 294,
+      "bytes": 12966,
+      "sha256": "719b6d8601018759b0a174a62c08865a405641748f499a235d1d45595a509db4"
+    },
+    "right-canopy": {
+      "source_crop": [
+        975,
+        110,
+        1439,
+        178
+      ],
+      "width": 464,
+      "height": 68,
+      "bytes": 5442,
+      "sha256": "865101b0fffc0395559c550756c469cf77937e19bc70b7c93e2a593c80924f20"
+    },
+    "right-meadow": {
+      "source_crop": [
+        986,
+        354,
+        1439,
+        404
+      ],
+      "width": 453,
+      "height": 50,
+      "bytes": 7696,
+      "sha256": "6ba6936591080100bc125f26969b66efa17bd1de0f1748a2e93e5f381452a739"
+    },
+    "footer-scene": {
+      "source_crop": [
+        9,
+        929,
+        1439,
+        1078
+      ],
+      "ui_removed": true,
+      "width": 1430,
+      "height": 149,
+      "bytes": 64034,
+      "sha256": "214df1ddceea2e7a53dadb3336aeefc6a1bd048cbf617b9b18b0cc54365692f7"
+    },
+    "left-edge-tree": {
+      "source_crop": [
+        9,
+        873,
+        29,
+        929
+      ],
+      "width": 57,
+      "height": 56,
+      "bytes": 1202,
+      "sha256": "537cc385b26d660b0ec580ff9b245bdc63f42943fcc509a1988a8e33e04d4e35"
+    },
+    "right-edge-tree": {
+      "source_crop": [
+        1427,
+        871,
+        1439,
+        929
+      ],
+      "width": 38,
+      "height": 58,
+      "bytes": 670,
+      "sha256": "1ef7d87c70a10e219e6ecdbc1cc14032d2d7e00685e023173d89a2d0816ac092"
+    },
+    "heading-travel": {
+      "source_crop": [
+        34,
+        487,
+        142,
+        520
+      ],
+      "width": 108,
+      "height": 33,
+      "bytes": 4182,
+      "sha256": "de50e1d288d1ae68330161527ee0efc79bdedefcb98c42330adf0e28ceb755e6"
+    },
+    "heading-nursery": {
+      "source_crop": [
+        386,
+        486,
+        511,
+        522
+      ],
+      "width": 125,
+      "height": 36,
+      "bytes": 4740,
+      "sha256": "c876cbc018b9eb2c0b8e627c9c48cc5d679059b5fe30953e85ca546064215c84"
+    },
+    "heading-bath": {
+      "source_crop": [
+        743,
+        487,
+        901,
+        521
+      ],
+      "width": 158,
+      "height": 34,
+      "bytes": 6194,
+      "sha256": "0eeb9cfe03a15a6240ce0cd9c38aa24e812b1ac73631347f7cc2b945f666d067"
+    },
+    "heading-clothing": {
+      "source_crop": [
+        1103,
+        487,
+        1235,
+        522
+      ],
+      "width": 132,
+      "height": 35,
+      "bytes": 4964,
+      "sha256": "b38c73dcd791e9c037b685beb043402c94fdf566b917a61c91c441d75d456def"
+    },
+    "heading-diapering": {
+      "source_crop": [
+        35,
+        718,
+        166,
+        754
+      ],
+      "width": 131,
+      "height": 36,
+      "bytes": 6024,
+      "sha256": "aec94542952678cd95112a924c50e53019e45c73bba8ad4e9129f0a9585d22fa"
+    },
+    "heading-feeding": {
+      "source_crop": [
+        385,
+        716,
+        497,
+        754
+      ],
+      "width": 112,
+      "height": 38,
+      "bytes": 4840,
+      "sha256": "81ddf88a58dbd5fd6ac46c73d81bebfbaa0dc997fdf17fec3d36e3f57640209b"
+    },
+    "heading-health": {
+      "source_crop": [
+        746,
+        717,
+        955,
+        753
+      ],
+      "width": 209,
+      "height": 36,
+      "bytes": 8054,
+      "sha256": "682266cd9af1452eacf5a7b8cf3c546f7af82226170a02efde9908de20dc5b36"
+    },
+    "heading-playtime": {
+      "source_crop": [
+        1101,
+        717,
+        1236,
+        754
+      ],
+      "width": 135,
+      "height": 37,
+      "bytes": 5294,
+      "sha256": "d574d4dafe6113ae650ee7e0039646e0773756fee3e45325a875f879f22dbf40"
+    },
+    "product-car-seat": {
+      "source_crop": [
+        34,
+        526,
+        134,
+        615
+      ],
+      "width": 100,
+      "height": 89,
+      "bytes": 2836,
+      "sha256": "088779abcc2928a2bf97fe0e10885080ddd7547fe169e5726060d6e229a62356"
+    },
+    "product-stroller": {
+      "source_crop": [
+        140,
+        526,
+        240,
+        615
+      ],
+      "width": 100,
+      "height": 89,
+      "bytes": 3176,
+      "sha256": "a7a47aedbb56f4c7047e2e0c02d99a8b26d4d23d7d8432425e301bb6f0400e7b"
+    },
+    "product-diaper-bag": {
+      "source_crop": [
+        247,
+        526,
+        351,
+        615
+      ],
+      "width": 104,
+      "height": 89,
+      "bytes": 2402,
+      "sha256": "ddb29b3e9478b098b5ccc5b46c52a10b20e97e55a6908fb9fb48ac8c51e2e31a"
+    },
+    "product-bassinet": {
+      "source_crop": [
+        382,
+        526,
+        487,
+        615
+      ],
+      "width": 105,
+      "height": 89,
+      "bytes": 2300,
+      "sha256": "0ab1a4faa5e89657b80f7056519013e5724eefe93996863c214c80adbd110267"
+    },
+    "product-sheets": {
+      "source_crop": [
+        490,
+        526,
+        590,
+        615
+      ],
+      "width": 100,
+      "height": 89,
+      "bytes": 1794,
+      "sha256": "a69e49a44ca7b652a420a0e9bc2256433a4de85d7986669345b5b3f9c7c81614"
+    },
+    "product-mattress-protector": {
+      "source_crop": [
+        597,
+        526,
+        705,
+        610
+      ],
+      "width": 108,
+      "height": 84,
+      "bytes": 1352,
+      "sha256": "077352e3767782044b1e2425af2955c372f1ed9fb029216efd23a69c214f2a7a"
+    },
+    "product-bathtub": {
+      "source_crop": [
+        744,
+        526,
+        849,
+        615
+      ],
+      "width": 105,
+      "height": 89,
+      "bytes": 1776,
+      "sha256": "226931c7463de3014dd1e25570f8b59e7f3b800dc35045cd65ee9d2dc89319e2"
+    },
+    "product-washcloths": {
+      "source_crop": [
+        855,
+        526,
+        956,
+        615
+      ],
+      "width": 101,
+      "height": 89,
+      "bytes": 2588,
+      "sha256": "ee74105b468d7814ea4e14cfd1d2d8f07eb8a7d33ffd257b0b62bac6886f50c6"
+    },
+    "product-hooded-towel": {
+      "source_crop": [
+        961,
+        526,
+        1066,
+        610
+      ],
+      "width": 105,
+      "height": 84,
+      "bytes": 2176,
+      "sha256": "c14a3814ea61f73e8bfa38901c9c8ea55097d7001ed029e3af0a72b020deba8f"
+    },
+    "product-footed-pajamas": {
+      "source_crop": [
+        1102,
+        526,
+        1203,
+        615
+      ],
+      "width": 101,
+      "height": 89,
+      "bytes": 2420,
+      "sha256": "a3b0d3cc88a171750077c9cc90bd09d3fff6c050c57067a2231af1da20484873"
+    },
+    "product-onesies": {
+      "source_crop": [
+        1209,
+        526,
+        1310,
+        610
+      ],
+      "width": 101,
+      "height": 84,
+      "bytes": 1470,
+      "sha256": "50e7049b2a65a357dc30e6d386f5ef49e601699991dc6aeb9fc4d3c485525ac2"
+    },
+    "product-sleep-sacks": {
+      "source_crop": [
+        1316,
+        526,
+        1418,
+        615
+      ],
+      "width": 102,
+      "height": 89,
+      "bytes": 2204,
+      "sha256": "6e126e337888b51ef06cb650d3ab8d4d60a8c99309f9b19ae89b700fe76a7b7a"
+    },
+    "product-diapers": {
+      "source_crop": [
+        34,
+        758,
+        105,
+        842
+      ],
+      "width": 71,
+      "height": 84,
+      "bytes": 2158,
+      "sha256": "4eba6e6b2ea6c13f166a9b6c772f717ff93386c79594ef766c016872a051ae9b"
+    },
+    "product-wipes": {
+      "source_crop": [
+        111,
+        758,
+        183,
+        842
+      ],
+      "width": 72,
+      "height": 84,
+      "bytes": 1594,
+      "sha256": "4afcd8f54bea32e5fb9e8f6b02e3f2922cf3f2f98e3841b4629abfdbf0810f11"
+    },
+    "product-ointment": {
+      "source_crop": [
+        190,
+        758,
+        263,
+        842
+      ],
+      "width": 73,
+      "height": 84,
+      "bytes": 1092,
+      "sha256": "317f1b1df1badc0d7d7790b2bbee14446928939f82807dc7ffa2fca3456c1385"
+    },
+    "product-changing-table": {
+      "source_crop": [
+        271,
+        758,
+        351,
+        842
+      ],
+      "width": 80,
+      "height": 84,
+      "bytes": 2642,
+      "sha256": "3d6555a31c9f2b48bdee33c2e3e9d6bebc50f6f2f2a3ff8d0e8d7ad462de7858"
+    },
+    "product-breast-pump": {
+      "source_crop": [
+        382,
+        758,
+        456,
+        842
+      ],
+      "width": 74,
+      "height": 84,
+      "bytes": 1556,
+      "sha256": "410764d79a6fab8a1aed1540c13029d9dbbc19d626717d9d892c6ad6f7e4ff69"
+    },
+    "product-bottles": {
+      "source_crop": [
+        462,
+        758,
+        537,
+        842
+      ],
+      "width": 75,
+      "height": 84,
+      "bytes": 1722,
+      "sha256": "1257642e51bd8b06bcef58d9648eaa34de1aa769b0e7293215d77b9fbb3dbf7e"
+    },
+    "product-drying-rack": {
+      "source_crop": [
+        541,
+        758,
+        621,
+        842
+      ],
+      "width": 80,
+      "height": 84,
+      "bytes": 1474,
+      "sha256": "d9b0f48a9298699541d87d53b76384ca9e27764c6a7796372ad6acedb5b4e0dd"
+    },
+    "product-nursing-bras": {
+      "source_crop": [
+        626,
+        758,
+        707,
+        842
+      ],
+      "width": 81,
+      "height": 84,
+      "bytes": 1952,
+      "sha256": "c3d33ce4f0cf5ba14f62eeb184e72ef5940f9305830214d4133671f7617c9f62"
+    },
+    "product-nail-trimmer": {
+      "source_crop": [
+        744,
+        758,
+        849,
+        842
+      ],
+      "width": 105,
+      "height": 84,
+      "bytes": 1390,
+      "sha256": "9a9ccb9f8f7d39c4bbec5c81a390212044c62a21875fe5b6032ffe9968b8a953"
+    },
+    "product-thermometer": {
+      "source_crop": [
+        855,
+        758,
+        956,
+        842
+      ],
+      "width": 101,
+      "height": 84,
+      "bytes": 1474,
+      "sha256": "e91dfc2f4510bc93a50a291896f0998ff4454027184172e9fd8962cf6091281f"
+    },
+    "product-monitor": {
+      "source_crop": [
+        962,
+        758,
+        1066,
+        842
+      ],
+      "width": 104,
+      "height": 84,
+      "bytes": 2162,
+      "sha256": "d261e4ec6e3efb52fe67755dceae390a84f67af9bf131d434fe45a31b04dbf77"
+    },
+    "product-play-gym": {
+      "source_crop": [
+        1102,
+        758,
+        1178,
+        842
+      ],
+      "width": 76,
+      "height": 84,
+      "bytes": 2808,
+      "sha256": "21e6673c91cf7feb0316f9e35b96f8371a41df45ca9717ec4fdcd9f0360f9d0f"
+    },
+    "product-soft-books": {
+      "source_crop": [
+        1184,
+        758,
+        1259,
+        842
+      ],
+      "width": 75,
+      "height": 84,
+      "bytes": 1938,
+      "sha256": "b1fa1ac5d56c8214c8186e45bd54e355c255a1483a3879301d0c4775a09b733b"
+    },
+    "product-rattles": {
+      "source_crop": [
+        1265,
+        758,
+        1337,
+        842
+      ],
+      "width": 72,
+      "height": 84,
+      "bytes": 1800,
+      "sha256": "a14defc11618a133beca34955a73933b642932793ea44d1f612eccb57b5c06a0"
+    },
+    "product-lovey": {
+      "source_crop": [
+        1345,
+        758,
+        1418,
+        842
+      ],
+      "width": 73,
+      "height": 84,
+      "bytes": 1722,
+      "sha256": "5d9514d7063f769d90585470f65d59cd304ce7b0fd8e0d802e234e5ed55947fb"
+    },
+    "woodland-family": {
+      "width": 457,
+      "height": 294,
+      "bytes": 47854,
+      "sha256": "bd0c8eb572d92b346875686605c7deb4eae495210be0764ed233c2e4d01bdebe"
+    },
+    "tagline": {
+      "width": 358,
+      "height": 30,
+      "bytes": 14452,
+      "sha256": "9c01966785a5b746ab20cf034c3d69494dd6ad9457c827be521d59fad4b7bdcf"
+    },
+    "footer-left": {
+      "width": 470,
+      "height": 149,
+      "bytes": 26026,
+      "sha256": "395afa033a567d5e41f67240f885ab7a40fdfa1fe479a150fa246e963cd00621"
+    },
+    "footer-right": {
+      "width": 470,
+      "height": 149,
+      "bytes": 26486,
+      "sha256": "fc243067a76f9d65faef5b687077c79fa2b4970d07686bb56c3d2634a148c90b"
+    }
+  },
+  "total_webp_bytes": 462492
+}
