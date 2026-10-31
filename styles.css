@@ -27,3 +27,7 @@ dialog{font:15px/1.5 Arial,Helvetica,sans-serif;color:var(--ink);border:1px soli
 .category-title-text{font-family:'Kalam','Comic Sans MS',cursive;font-weight:700;font-size:19.8rem;line-height:34rem;color:#172741;letter-spacing:-.35rem;white-space:nowrap}
 .category:nth-child(7) .category-title-text{font-size:18.4rem;letter-spacing:-.6rem}
 @media(max-width:1099px){.category-heading h3{max-width:85%}.category-title-text{font-size:19.8px;line-height:34px}.category:nth-child(7) .category-title-text{font-size:18.4px}.category-icon{width:42px;height:34px}.category-icon img{height:34px}}
+
+/* Additional gift states share the approved card dimensions and typography. */
+.status.reserved{color:#795f2a;background:linear-gradient(#fff0cf,#f9e4b8)}
+.status.partial{color:#3e6480;background:linear-gradient(#e6f1f9,#d7e9f3)}
