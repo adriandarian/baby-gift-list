@@ -1,0 +1,58 @@
+name: Verify production artwork and interactions
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - styles.css
+      - app.js
+      - assets/**
+      - data/**
+      - tests/**
+      - .github/workflows/visual-check.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: production-visual-check
+  cancel-in-progress: true
+jobs:
+  browser-verification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install browser testing dependencies
+        run: |
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Verify production serves this exact source
+        run: |
+          python - <<'PY'
+          import urllib.request,hashlib,pathlib,time
+          names=['index.html','styles.css','app.js','data/registry.json','assets/approved/left-edge-tree.webp']
+          expected={name:hashlib.sha256(pathlib.Path(name).read_bytes()).hexdigest() for name in names}
+          for attempt in range(40):
+              try:
+                  for name,wanted in expected.items():
+                      path='' if name=='index.html' else name
+                      request=urllib.request.Request('https://baby-gift-list.vercel.app/'+path+'?verification='+str(time.time_ns()),headers={'Cache-Control':'no-cache'})
+                      with urllib.request.urlopen(request,timeout=15) as response: received=response.read()
+                      assert hashlib.sha256(received).hexdigest()==wanted,name
+                  print('The live site serves the exact reviewed source and artwork.')
+                  break
+              except Exception as error:
+                  if attempt==39:raise
+                  print('Production source not yet synchronized:',type(error).__name__)
+                  time.sleep(3)
+          PY
+      - name: Capture and test live website at seven viewport widths
+        run: python tests/browser_check.py --base-url https://baby-gift-list.vercel.app --output qa-production
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: production-browser-evidence
+          path: qa-production
+          retention-days: 14
