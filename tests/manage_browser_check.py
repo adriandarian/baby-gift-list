@@ -34,7 +34,8 @@ with sync_playwright() as p:
   assert page.locator('#login-panel').is_visible()
   page.locator('#login-password').fill('test-only-long-password')
   page.locator('#login-form button[type=submit]').click()
-  assert page.locator('#manager-panel').is_visible()
+  page.locator('#manager-panel').wait_for(state='visible',timeout=10000)
+  page.locator('#items-body tr').first.wait_for(state='visible',timeout=10000)
   assert page.locator('#items-body tr').count()==56
   page.locator('#search').fill('stroller')
   assert page.locator('#items-body tr').count()==2
