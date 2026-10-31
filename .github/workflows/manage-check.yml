@@ -1,7 +1,7 @@
 name: Test Gift Manager
 on:
   push:
-    branches: [feature/manage-gifts]
+    branches: [feature/manage-gifts, feature/daily-manager-password]
 permissions:
   contents: read
 jobs:
