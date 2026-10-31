@@ -1,0 +1,75 @@
+name: Verify and import approved reference rebuild
+on:
+  push:
+    branches: [design/approved-reference-parity]
+    paths: [.github/workflows/import-approved-release.yml]
+permissions:
+  contents: write
+jobs:
+  import-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Preserve the existing registry for comparison
+        run: |
+          node <<'JS'
+          const fs=require('fs'),vm=require('vm');
+          const html=fs.readFileSync('index.html','utf8');
+          const start=html.indexOf('const items = [');
+          const end=html.indexOf('].map(',start);
+          if(start<0||end<0)throw new Error('Original registry not found');
+          const literal=html.slice(html.indexOf('[',start),end+1);
+          const data=vm.runInNewContext(literal,Object.create(null),{timeout:1000}).map(([name,category,emoji,link,alternate])=>({name,category,purchased:link===true,links:[link,alternate].filter(x=>typeof x==='string'&&x.startsWith('https://'))}));
+          fs.writeFileSync('/tmp/original-registry.json',JSON.stringify(data));
+          JS
+      - name: Download and verify reviewed release
+        run: |
+          python - <<'PY'
+          import urllib.request,hashlib,zipfile,io,json,pathlib
+          data=urllib.request.urlopen('https://sb-2uusk0ib8kmr.vercel.run/release.zip',timeout=60).read()
+          assert len(data)==2333279
+          assert hashlib.sha256(data).hexdigest()=='82e90c927c998c1460abfa96d1f0e43d524385c0d6a8c9cdbbf3ac4334248a78'
+          with zipfile.ZipFile(io.BytesIO(data)) as z:
+              manifest=json.loads(z.read('release-manifest.json'))
+              assert set(z.namelist())==set(manifest)|{'release-manifest.json'}
+              for name,expected in manifest.items():
+                  p=pathlib.PurePosixPath(name)
+                  assert not p.is_absolute() and '..' not in p.parts
+                  assert p.parts[0] in {'index.html','styles.css','app.js','README.md','assets','data','docs','tests'}
+                  assert hashlib.sha256(z.read(name)).hexdigest()==expected,name
+              z.extractall('.')
+          before=json.loads(pathlib.Path('/tmp/original-registry.json').read_text())
+          after=json.loads(pathlib.Path('data/registry.json').read_text())['items']
+          assert [{k:x[k] for k in ('name','category','purchased','links')} for x in after]==before
+          assert len(after)==56 and sum(x['purchased'] for x in after)==12
+          print('Release verified; all 56 registry records and original links preserved.')
+          PY
+      - name: Install browser testing dependencies
+        run: |
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Test actual served HTML at seven viewport widths
+        run: python tests/browser_check.py --output qa-acceptance
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: approved-reference-browser-verification
+          path: qa-acceptance
+          retention-days: 14
+      - name: Commit verified source to the feature branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          rm -f .github/workflows/import-approved-release.yml .github/workflows/parity-capture.yml
+          git add index.html styles.css app.js README.md data assets/approved docs tests release-manifest.json .github/workflows
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Rebuild registry from exact approved artwork with seven-width browser verification'
+          python - <<'PY'
+          import os,subprocess,base64
+          env=os.environ.copy()
+          header='AUTHORIZATION: basic '+base64.b64encode(('x-access-token:'+env.pop('GH_TOKEN')).encode()).decode()
+          env.update({'GIT_CONFIG_COUNT':'1','GIT_CONFIG_KEY_0':'http.https://github.com/.extraheader','GIT_CONFIG_VALUE_0':header})
+          subprocess.run(['git','push','origin','HEAD:design/approved-reference-parity'],env=env,check=True)
+          PY
