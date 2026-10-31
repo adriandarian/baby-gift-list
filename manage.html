@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Manage Gifts · Baby Gift List</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/manage.css">
+  <script defer src="/manage.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="brand"><span aria-hidden="true">🐰</span><span>Baby Gift List</span></a>
+    <a href="/" class="back-home">← View family gift list</a>
+  </header>
+  <main class="workspace">
+    <div class="page-intro">
+      <div><p class="eyebrow">Private family workspace</p><h1>Manage Our Gifts <span aria-hidden="true">♡</span></h1><p>Keep track of what we need, what’s reserved, and what we’ve received.</p></div>
+      <div class="leaf-cluster" aria-hidden="true">🌿 🌸 🌱</div>
+    </div>
+    <section class="card auth-card" id="setup-panel" hidden>
+      <h2>One-time setup needed</h2>
+      <p>The manager is built, but secure saving needs a GitHub access token and two private Vercel settings. No gift data has been changed.</p>
+      <p>In the Vercel project's <strong>Settings → Environment Variables</strong>, add <code>GITHUB_REGISTRY_TOKEN</code>, <code>REGISTRY_ADMIN_PASSWORD</code>, and <code>REGISTRY_SESSION_SECRET</code> for Production. Redeploy after adding them.</p>
+      <p>Make the GitHub token fine-grained, limited to the <code>baby-gift-list</code> repository with <strong>Contents: Read and write</strong>. Use a strong password (16+ characters) and a separate randomly generated session secret (32+ characters). Never paste them into the public repository.</p>
+    </section>
+    <section class="card auth-card" id="login-panel" hidden>
+      <div class="lock" aria-hidden="true">🔒</div><h2>Family manager sign-in</h2><p>Only people with the manager password can make changes.</p>
+      <form id="login-form">
+        <label for="login-password">Manager password</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password" minlength="16" required>
+        <button type="submit" class="btn primary">Sign in</button>
+      </form>
+    </section>
+    <div id="manager-panel" hidden>
+      <div class="manager-actions">
+        <div class="manager-info"><span class="live-dot"></span><strong>Family gift tracker</strong><span class="subtle" id="revision">Loaded from GitHub</span></div>
+        <div class="actions-right">
+          <button class="btn light" type="button" id="refresh-button">↻ Refresh</button>
+          <button class="btn light" type="button" id="export-button">↓ Export backup</button>
+          <button class="btn light" type="button" id="logout-button">Sign out</button>
+        </div>
+      </div>
+      <div class="metrics" id="metrics"></div>
+      <div class="card list-panel">
+        <div class="list-header">
+          <div><h2>All baby items</h2><p>Quickly update a status or number received, then save your changes.</p></div>
+          <button class="btn primary" type="button" id="add-button">+ Add an item</button>
+        </div>
+        <div class="filters">
+          <label class="search-wrap"><span class="sr-only">Search items</span><input id="search" type="search" placeholder="Search the gift list…"></label>
+          <label><span class="sr-only">Category</span><select id="category-filter"><option value="all">All categories</option></select></label>
+          <label><span class="sr-only">Status</span><select id="status-filter"><option value="all">All statuses</option><option value="needed">Still needed</option><option value="reserved">Reserved</option><option value="partial">Partly received</option><option value="received">Received</option></select></label>
+          <label class="archive-toggle"><input type="checkbox" id="show-archived"> Show archived</label>
+        </div>
+        <p class="subtle" id="visible-count"></p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Item</th><th>Category</th><th>Status</th><th>Have / Need</th><th></th></tr></thead>
+          <tbody id="items-body"></tbody>
+        </table></div>
+        <p class="list-empty" id="empty-message" hidden>No items match your filters.</p>
+      </div>
+      <div class="bottom-bar" id="save-bar">
+        <span id="save-message" role="status">No unsaved changes</span>
+        <button class="btn primary" id="save-button" type="button" disabled>Save changes</button>
+      </div>
+      <p class="privacy-note"><strong>Privacy:</strong> Gift names, categories, links, and notes are saved to a public GitHub repository, so please don't record private addresses, phone numbers, or other sensitive information. New gifts appear in “View all” on the public site without changing the approved homepage artwork. Changes are visible after Vercel redeploys.</p>
+    </div>
+    <p class="error-message" id="error-banner" role="alert" hidden></p>
+  </main>
+  <dialog id="edit-dialog" aria-labelledby="edit-title">
+    <form id="edit-form" method="dialog">
+      <div class="dialog-head"><h2 id="edit-title">Edit item</h2><button class="close" type="button" id="close-dialog" aria-label="Close">×</button></div>
+      <label>Item name<input name="name" maxlength="180" required placeholder="e.g. Baby blanket"></label>
+      <div class="two-col">
+        <label>Category<select name="category" required></select></label>
+        <label>Quantity needed<input name="wanted" type="number" min="1" max="1000" required></label>
+      </div>
+      <div class="two-col">
+        <label>Current status<select name="status">
+          <option value="needed">Still needed</option><option value="reserved">Reserved</option><option value="partial">Partially received</option><option value="received">Received</option>
+        </select></label>
+        <label>Quantity received<input name="received" type="number" min="0" max="1000"></label>
+      </div>
+      <label>Shopping links <span class="muted">(one HTTPS link per line)</span><textarea name="links" rows="3" placeholder="https://example.com/baby-gift"></textarea></label>
+      <label>Notes <span class="muted">(public; no personal details)</span><textarea name="notes" rows="3" maxlength="700" placeholder="Color, size or preferences"></textarea></label>
+      <label class="checkbox-line" id="archive-line"><input name="archived" type="checkbox"> Archive this item <span class="muted">(hide it from the public list)</span></label>
+      <p class="hint" id="featured-note" hidden>This gift is pictured in the approved homepage design, so its category and archive setting are fixed. You can still update its status and quantities.</p>
+      <p class="validation" id="edit-error" role="alert" hidden></p>
+      <div class="dialog-actions"><button class="btn light" type="button" id="cancel-dialog">Cancel</button><button class="btn primary" type="submit">Apply to list</button></div>
+    </form>
+  </dialog>
+</body>
+</html>
