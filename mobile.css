@@ -114,3 +114,10 @@
   .product-name,.category:nth-child(n+5) .product-name,.four-up .product-name{font-size:12px!important;}
   .status,.four-up .status{min-width:0;font-size:10px;padding:5px 5px;}
 }
+/* Protect mobile headline and welcome text from foliage while retaining woodland framing. */
+@media(max-width:599px){
+  .hero{background-image:url('assets/approved/right-canopy.webp'),url('assets/approved/right-meadow.webp');background-size:210px auto,340px auto;background-position:right top,right bottom;}
+  .hero::before{content:'';position:absolute;left:0;top:43px;width:94px;height:210px;background:url('assets/approved/left-foliage.webp') left top/contain no-repeat;opacity:.22;pointer-events:none;z-index:0;}
+  .hero-copy,.mobile-family,.progress-card{z-index:1;}
+}
+@media(max-width:359px){.hero::before{display:none}}
