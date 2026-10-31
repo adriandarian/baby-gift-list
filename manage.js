@@ -15,7 +15,10 @@
       ...options
     });
     let data={};try{data=await res.json();}catch{}
-    if(!res.ok){const error=new Error(data.error||'Unable to connect to the gift manager');error.status=res.status;throw error;}
+    if(!res.ok){
+      if(res.status===401 && action!=='login' && action!=='session')lockManager(data.rememberedDevice!==false);
+      const error=new Error(data.error||'Unable to connect to the gift manager');error.status=res.status;throw error;
+    }
     return data;
   }
   function standardize(x) {
@@ -161,12 +164,29 @@
       failure(e.status===409?'Someone saved a newer version. Your edits are still on this screen. Export a backup, then refresh to review the latest list.':e.message);
     }finally{saving=false;$('#save-button').disabled=!dirty();}
   }
+  function lockManager(remembered=false) {
+    csrf='';
+    $('#manager-panel').hidden=true;
+    $('#login-panel').hidden=false;
+    if($('#edit-dialog').open)$('#edit-dialog').close();
+    $('#login-intro').textContent=remembered
+      ? 'Welcome back! This browser is remembered, but the manager password is required again for today.'
+      : 'Enter your manager password. This browser will be remembered for 30 days, but you will still sign in every new day.';
+    $('#daily-login-note').textContent='For your security, access resets at midnight Pacific Time, including on previously recognized devices.';
+  }
+  async function checkDailySession() {
+    if($('#setup-panel').hidden===false||$('#login-panel').hidden===false||$('#manager-panel').hidden===true)return;
+    try {
+      const session=await request('session');
+      if(!session.authenticated)lockManager(Boolean(session.rememberedDevice));
+    }catch(err){if(err.status===401)lockManager(true);}
+  }
   async function authenticate() {
     try {
       const setup=await request('setup');
       if(!setup.ready){$('#setup-panel').hidden=false;return;}
       const session=await request('session');
-      if(!session.authenticated){$('#login-panel').hidden=false;return;}
+      if(!session.authenticated){lockManager(Boolean(session.rememberedDevice));return;}
       csrf=session.csrf;
       $('#manager-panel').hidden=false;
       await loadRegistry();
@@ -181,7 +201,11 @@
       $('#login-password').value='';
       $('#login-panel').hidden=true;
       $('#manager-panel').hidden=false;
-      await loadRegistry();
+      if(items.length && dirty()){
+        refreshSaveBar('Re-authenticated. Your unsaved edits are still here; save them when ready.');
+      } else {
+        await loadRegistry();
+      }
     }catch(error){failure(error.message);}finally{button.disabled=false;}
   });
   $('#logout-button').addEventListener('click',async()=>{
@@ -228,5 +252,8 @@
     if(dirty()){e.preventDefault();e.returnValue='';}
   });
   fillCategorySelect();
+  // A tab left open overnight locks again, even without a page reload.
+  setInterval(checkDailySession, 60*1000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkDailySession();});
   authenticate();
 })();
