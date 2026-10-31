@@ -70,6 +70,7 @@
     if(s==='received')i.quantityReceived=i.quantityWanted;
     else if(s==='partial')i.quantityReceived=i.quantityWanted>1?Math.max(1,Math.min(i.quantityReceived||1,i.quantityWanted-1)):i.quantityWanted;
     else i.quantityReceived=0;
+    i.status=s;
     i.status=statusOf(i);
     i.purchased=i.status==='received';
   }
