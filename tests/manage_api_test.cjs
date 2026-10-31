@@ -103,18 +103,27 @@ function cookiePair(x){
    x=await call(req('registry','PUT',{sha,items:added},{cookie:newCookie,'x-admin-csrf':newCsrf,origin:'https://evil.example'}));
    assert.equal(x.statusCode,403);
 
-   // Halloween midnight uses a 25-hour day because Pacific clocks fall back.
-   Date.now=()=>Date.parse('2026-11-01T07:59:00Z');
+   // October 31 expires at midnight PDT; November 1 is the 25-hour DST fall-back day.
+   Date.now=()=>Date.parse('2026-11-01T06:59:00Z');
    x=await call(req('session','GET',null,{cookie:newCookie}));
    assert.equal(x.data.authenticated,true,'same Pacific day despite DST transition');
-   Date.now=()=>Date.parse('2026-11-01T08:00:01Z');
+   Date.now=()=>Date.parse('2026-11-01T07:00:01Z');
    x=await call(req('session','GET',null,{cookie:newCookie}));
    assert.equal(x.data.authenticated,false,'locks at Pacific midnight after DST fall-back');
    assert.equal(x.data.rememberedDevice,true);
-   Date.now=()=>Date.parse('2026-11-01T08:01:00Z');
+   Date.now=()=>Date.parse('2026-11-01T07:01:00Z');
    x=await call(req('login','POST',{password:process.env.REGISTRY_ADMIN_PASSWORD},{cookie:newCookie}));
    assert.equal(x.statusCode,200);
    assert.equal(x.data.day,'2026-11-01');
+   assert.ok(Number(x.headers['Set-Cookie'][0].match(/Max-Age=(\d+)/)[1])>24*60*60,'DST fall-back day lasts 25 hours');
+   const nov1Cookies=cookiePair(x),nov1Csrf=x.data.csrf;
+   Date.now=()=>Date.parse('2026-11-02T07:59:00Z');
+   x=await call(req('session','GET',null,{cookie:nov1Cookies}));
+   assert.equal(x.data.authenticated,true);
+   Date.now=()=>Date.parse('2026-11-02T08:00:01Z');
+   x=await call(req('session','GET',null,{cookie:nov1Cookies}));
+   assert.equal(x.data.authenticated,false);
+   Date.now=()=>Date.parse('2026-11-01T07:01:00Z');
    x=await call(req('logout','POST',{}, {cookie:cookiePair(x),'x-admin-csrf':x.data.csrf}));
    assert.equal(x.statusCode,200);
    assert.match(x.headers['Set-Cookie'],/Max-Age=0/);
