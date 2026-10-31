@@ -57,6 +57,12 @@ function cookiePair(x){
    assert.equal(x.statusCode,401,'GET without CSRF header must be rejected');
    x=await call(req('registry','GET',null,{cookie:combined,'x-admin-csrf':csrf}));
    assert.equal(x.statusCode,200);assert.equal(x.data.registry.items.length,56);
+   const originalPassword=process.env.REGISTRY_ADMIN_PASSWORD;
+   process.env.REGISTRY_ADMIN_PASSWORD='changed-admin-password-for-session-revocation';
+   x=await call(req('session','GET',null,{cookie:combined}));
+   assert.equal(x.data.authenticated,false,'changing the server password invalidates sessions');
+   assert.equal(x.data.rememberedDevice,true,'remembered device survives password rotation');
+   process.env.REGISTRY_ADMIN_PASSWORD=originalPassword;
    x=await call(req('session','GET',null,{cookie:cookieSet[0].split(';')[0]}));
    assert.equal(x.data.authenticated,false,'session without signed device cookie rejected');
 
