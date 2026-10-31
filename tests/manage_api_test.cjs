@@ -124,7 +124,7 @@ function cookiePair(x){
    x=await call(req('session','GET',null,{cookie:nov1Cookies}));
    assert.equal(x.data.authenticated,false);
    Date.now=()=>Date.parse('2026-11-01T07:01:00Z');
-   x=await call(req('logout','POST',{}, {cookie:cookiePair(x),'x-admin-csrf':x.data.csrf}));
+   x=await call(req('logout','POST',{}, {cookie:nov1Cookies,'x-admin-csrf':nov1Csrf}));
    assert.equal(x.statusCode,200);
    assert.match(x.headers['Set-Cookie'],/Max-Age=0/);
    console.log('Manager API: daily Pacific midnight, DST, remembered device, mandatory password, CSRF, conflicts, save and logout PASS');
