@@ -1,0 +1,27 @@
+name: Verify mobile layouts
+on:
+  push:
+    branches: [feature/mobile-layout-refresh]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  responsive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Install browser tooling
+        run: |
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Check desktop regression and mobile interactions
+        run: |
+          python tests/browser_check.py --output qa-original
+          python tests/manage_browser_check.py
+          python tests/mobile_layout_check.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: mobile-layout-screenshots
+          path: qa-mobile
+          retention-days: 14
