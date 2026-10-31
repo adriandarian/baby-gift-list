@@ -56,3 +56,58 @@ Compare `qa-output/after-1430.png` with `docs/approved-reference.png` at native 
 ## Deployment
 
 Vercel is connected to `adriandarian/baby-gift-list`. Production uses `main`. No build command, application framework, runtime secrets, or server functions are required.
+
+## Updating the registry from a browser
+
+The approved woodland design remains the public website. The private editor is at
+`https://baby-gift-list.vercel.app/manage.html`. Once configured, it lets you:
+
+- Mark items **Still needed**, **Reserved**, **Partly received**, or **Received**
+- Track quantity needed versus quantity received, including partially gifted sets
+- Add gifts, edit names, shopping links, categories, and notes
+- Archive non-featured items (instead of deleting history)
+- Search/filter, export a JSON backup, and review changes before saving
+
+The repository's `data/registry.json` is the shared source of truth. Every save
+makes an authenticated, revision-checked GitHub commit, which causes a normal
+Vercel deployment. This means a friend using the public site may see the old
+status for a short time until deployment finishes. Stale simultaneous edits
+return a conflict rather than silently overwriting someone else's work.
+
+### One-time setup (required before saves work)
+
+In your Vercel project, go to **Settings → Environment Variables** and add
+these three values for **Production**. Create them directly in Vercel, never
+commit them or paste them into chat.
+
+1. `GITHUB_REGISTRY_TOKEN` — create a fine-grained GitHub personal access token
+   for **only** `adriandarian/baby-gift-list`, granting **Contents: Read and write**
+   (Metadata: Read is default). The token grants publishing access, so store it
+   only as a private Vercel environment variable. Consider an expiration and
+   a reminder to rotate it.
+2. `REGISTRY_ADMIN_PASSWORD` — your own strong, unique password of **at least
+   16 characters** for the gift manager. Share only with trusted editors.
+3. `REGISTRY_SESSION_SECRET` — a separate, high-entropy random string of
+   **at least 32 characters** for signing eight-hour login sessions.
+
+**Redeploy** the project after adding environment variables. Then visit
+`/manage.html`, sign in, and make your first update. The editor tells you
+when setup is missing; it cannot secretly initialize credentials or create
+GitHub tokens on your behalf.
+
+**Privacy:** The repository is public. Gift names, notes, categories, and links
+in the registry are public too; don't store private contact information,
+addresses, or personal gift-giver names in those fields.
+
+**Design preservation:** The featured gifts and their categories are locked
+against archiving/moving so the approved homepage composition stays unchanged.
+New items appear in the category browser rather than changing the illustrated
+homepage. The manager itself uses its own CSS and does not affect the visual
+design of the public website.
+
+### Developer testing
+
+`node tests/manage_api_test.cjs` tests authentication, CSRF protection,
+optimistic concurrency, safe item updates, and the ability to add gifts using
+a mocked GitHub response. The GitHub Actions workflow also runs browser checks
+for the public site and the new manager. No real GitHub token is needed in CI.
