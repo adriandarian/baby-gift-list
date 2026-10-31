@@ -90,6 +90,28 @@ commit them or paste them into chat.
 3. `REGISTRY_SESSION_SECRET` — a separate, high-entropy random string of
    **at least 32 characters** for signing eight-hour login sessions.
 
+### Remembered devices and daily password checks
+
+The manager remembers a successfully signed-in browser for **30 days** using a
+secure, HTTP-only, signed cookie. Recognition only changes the welcome message:
+**it never grants access or replaces the password**.
+
+After entering the manager password, the authenticated session remains valid
+only until **12:00 a.m. Pacific Time** (America/Los_Angeles), regardless of when
+sign-in occurred or whether the browser has been remembered. Pacific daylight
+saving transitions are handled automatically. Opening a page after midnight,
+switching back to an old tab, or making an API request after midnight requires
+typing the password again. A tab left open is checked each minute and when
+it becomes visible. Signing out immediately clears its session but not the
+30-day device recognition. No password is stored in a browser cookie, local
+storage, or the GitHub repository.
+
+Changing `REGISTRY_ADMIN_PASSWORD` or `REGISTRY_SESSION_SECRET` in Vercel
+invalidates active sessions once the new deployment is live. The actual
+password verification takes place only in the serverless API. Browser
+password managers might still offer autofill despite `autocomplete=off`;
+you must press Sign in to unlock the manager each new day.
+
 **Redeploy** the project after adding environment variables. Then visit
 `/manage.html`, sign in, and make your first update. The editor tells you
 when setup is missing; it cannot secretly initialize credentials or create
