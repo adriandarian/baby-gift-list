@@ -6,7 +6,20 @@ const REPO = 'adriandarian/baby-gift-list';
 const PATH = 'data/registry.json';
 const BRANCH = 'main';
 const COOKIE = '__Host-baby_registry_admin';
-const SESSION_SECONDS = 8 * 60 * 60;
+const DEVICE_COOKIE = '__Host-baby_registry_device';
+const DEVICE_SECONDS = 30 * 24 * 60 * 60;
+const PACIFIC_ZONE = 'America/Los_Angeles';
+const pacificFormatter = new Intl.DateTimeFormat('en-US',{timeZone:PACIFIC_ZONE,year:'numeric',month:'2-digit',day:'2-digit'});
+function pacificDay(timestamp=Date.now()) {
+  const parts=Object.fromEntries(pacificFormatter.formatToParts(new Date(timestamp)).filter(p=>p.type!=='literal').map(p=>[p.type,p.value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+// Locate the next calendar day in the named time zone: handles both DST changes.
+function nextPacificMidnight(timestamp=Date.now()) {
+  const date=pacificDay(timestamp); let lower=timestamp, upper=timestamp+27*60*60*1000;
+  while(upper-lower>1000){const mid=Math.floor((lower+upper)/2);if(pacificDay(mid)===date)lower=mid;else upper=mid;}
+  return Math.ceil(upper/1000)*1000;
+}
 const MAX_BODY_BYTES = 180000;
 const CATEGORIES = ['Travel','Nursery','Bath & Care','Clothing','Diapering','Feeding','Health & Safety','Playtime'];
 
@@ -35,18 +48,26 @@ function cookies(req) {
     const i=x.indexOf('=');return [x.slice(0,i),i>=0?x.slice(i+1):''];
   }));
 }
+function verifySigned(value,namespace) {
+  if(!value||value.length>500||!configReady())return null;
+  const split=value.lastIndexOf('.');
+  if(split<=0||!equals(value.slice(split+1),signature(namespace+value.slice(0,split))))return null;
+  try{return JSON.parse(Buffer.from(value.slice(0,split),'base64url').toString('utf8'));}
+  catch{return null;}
+}
+function device(req) {
+  const value=verifySigned(cookies(req)[DEVICE_COOKIE],'device:');
+  if(!value||value.v!==1||!Number.isInteger(value.exp)||value.exp*1000<=Date.now()||
+     typeof value.id!=='string'||!/^[0-9a-f]{36}$/.test(value.id))return null;
+  return value;
+}
 function token(req) {
   const raw=cookies(req)[COOKIE];
-  if (!raw || raw.length > 500 || !configReady()) return null;
-  const split=raw.lastIndexOf('.');
-  if (split<=0) return null;
-  const body=raw.slice(0,split), mac=raw.slice(split+1);
-  if (!equals(mac,signature(body))) return null;
-  try {
-    const data=JSON.parse(Buffer.from(body,'base64url').toString('utf8'));
-    if (data.v!==1 || !Number.isInteger(data.exp) || data.exp*1000<=Date.now()) return null;
-    return raw;
-  } catch {return null;}
+  const data=verifySigned(raw,'session:');
+  // Day is checked on EVERY API request; remembering a device never extends access.
+  if(!data||data.v!==2||!Number.isInteger(data.exp)||data.exp*1000<=Date.now()||
+      data.day!==pacificDay()||data.deviceId!==device(req)?.id)return null;
+  return raw;
 }
 function csrf(t) { return signature('csrf:'+t); }
 function authenticated(req) {
@@ -61,11 +82,22 @@ function checkOrigin(req) {
     return u.host===host && (u.protocol==='https:' || (u.protocol==='http:' && /^localhost(:|$)/.test(host)));
   } catch {return false;}
 }
-function setSession(res) {
-  const payload=Buffer.from(JSON.stringify({v:1,exp:Math.floor(Date.now()/1000)+SESSION_SECONDS,nonce:randomBytes(18).toString('hex')})).toString('base64url');
-  const value=payload+'.'+signature(payload);
-  res.setHeader('Set-Cookie',COOKIE+'='+value+'; Path=/; Max-Age='+SESSION_SECONDS+'; HttpOnly; Secure; SameSite=Strict');
-  return csrf(value);
+function setSession(req,res) {
+  const existing=device(req);
+  const deviceId=existing?.id||randomBytes(18).toString('hex');
+  const now=Date.now();
+  const day=pacificDay(now);
+  const expiry=nextPacificMidnight(now);
+  const sessionData=Buffer.from(JSON.stringify({v:2,day,deviceId,exp:Math.floor(expiry/1000),nonce:randomBytes(18).toString('hex')})).toString('base64url');
+  const sessionToken=sessionData+'.'+signature('session:'+sessionData);
+  const deviceData=Buffer.from(JSON.stringify({v:1,id:deviceId,exp:Math.floor(now/1000)+DEVICE_SECONDS})).toString('base64url');
+  const deviceToken=deviceData+'.'+signature('device:'+deviceData);
+  const maxAge=Math.max(1,Math.floor((expiry-now)/1000));
+  res.setHeader('Set-Cookie',[
+    COOKIE+'='+sessionToken+'; Path=/; Max-Age='+maxAge+'; HttpOnly; Secure; SameSite=Strict',
+    DEVICE_COOKIE+'='+deviceToken+'; Path=/; Max-Age='+DEVICE_SECONDS+'; HttpOnly; Secure; SameSite=Strict'
+  ]);
+  return {csrf:csrf(sessionToken),day};
 }
 function clearSession(res) {
   res.setHeader('Set-Cookie',COOKIE+'=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict');
@@ -187,18 +219,18 @@ module.exports=async function handler(req,res) {
       const data=await bodyJson(req);
       const password=typeof data.password==='string'?data.password:'';
       if(password.length>256||!equals(password,process.env.REGISTRY_ADMIN_PASSWORD))return json(res,401,{error:'Incorrect password'});
-      const csrfValue=setSession(res);
-      return json(res,200,{ok:true,csrf:csrfValue});
+      const session=setSession(req,res);
+      return json(res,200,{ok:true,csrf:session.csrf,day:session.day,rememberedDevice:!(!device(req))});
     }
     if(req.method==='GET'&&action==='session'){
       const sessionToken=token(req);
-      return json(res,200,sessionToken?{authenticated:true,csrf:csrf(sessionToken)}:{authenticated:false});
+      return json(res,200,sessionToken?{authenticated:true,csrf:csrf(sessionToken),day:pacificDay(),rememberedDevice:true}:{authenticated:false,rememberedDevice:Boolean(device(req)),day:pacificDay()});
     }
     if(req.method==='POST'&&action==='logout'){
       if(!authenticated(req))return json(res,401,{error:'Please sign in again'});
       clearSession(res);return json(res,200,{ok:true});
     }
-    if(!authenticated(req))return json(res,401,{error:'Please sign in'});
+    if(!authenticated(req))return json(res,401,{error:'Your daily session has ended. Enter the password again to continue.',reauthRequired:true,rememberedDevice:Boolean(device(req))});
     if(req.method==='GET'&&action==='registry'){
       const {registry,sha}=await readRegistry();
       return json(res,200,{registry,sha});
