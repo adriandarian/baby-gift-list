@@ -89,12 +89,5 @@ def apply():
         assert original in html or replacement in html,original
         html=html.replace(original,replacement)
     index.write_text(html,encoding="utf-8")
-    js_file=ROOT/"app.js"
-    js=js_file.read_text(encoding="utf-8")
-    old="art('heading-'+category.id)"
-    new="`assets/type/heading-${category.id}.svg`"
-    assert old in js or new in js
-    js_file.write_text(js.replace(old,new),encoding="utf-8")
-
 if __name__=="__main__":
     apply()
