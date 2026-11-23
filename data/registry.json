@@ -10,7 +10,9 @@
         "https://uppababy.com/car-seats/infant/mesa-v3/ada/"
       ],
       "art": "car-seat",
-      "label": "Infant Car Seat"
+      "label": "Infant Car Seat",
+      "archived": true,
+      "notes": "Revisit CYBEX later. Nuna infant seat may be purchased personally at Nordstrom."
     },
     {
       "id": 1,
@@ -21,14 +23,18 @@
         "https://uppababy.com/strollers/full-size/cruz-v3/ada/"
       ],
       "art": "stroller",
-      "label": "Stroller"
+      "label": "Stroller",
+      "archived": true,
+      "notes": "UPPAbaby handled separately."
     },
     {
       "id": 2,
       "name": "Stroller bunting / cold or rain cover",
       "category": "Travel",
       "purchased": false,
-      "links": []
+      "links": [],
+      "archived": true,
+      "notes": "UPPAbaby handled separately."
     },
     {
       "id": 3,
@@ -39,7 +45,9 @@
         "https://www.stokke.com/USA/en-us/nursery/stokke-sleepi/sleepi-complete-bundle-us.html?6006_0=pid%3D600601%26color%3D100"
       ],
       "art": "bassinet",
-      "label": "Bassinet"
+      "label": "Bassinet",
+      "archived": true,
+      "notes": "Stokke Sleepi items handled by parents."
     },
     {
       "id": 4,
@@ -50,7 +58,9 @@
         "https://www.stokke.com/USA/en-us/nursery-accessories/baby-crib-accessories/sleepi-mini-fitted-sheet-6832-5998-6009.html?pid=683205&color=623"
       ],
       "art": "sheets",
-      "label": "Bassinet Sheets"
+      "label": "Bassinet Sheets",
+      "archived": true,
+      "notes": "Stokke Sleepi items handled by parents."
     },
     {
       "id": 5,
@@ -61,16 +71,20 @@
         "https://www.stokke.com/USA/en-us/nursery-accessories/baby-crib-accessories/6005.html"
       ],
       "art": "mattress-protector",
-      "label": "Waterproof\nMattress Protector"
+      "label": "Waterproof\nMattress Protector",
+      "archived": true,
+      "notes": "Stokke Sleepi items handled by parents."
     },
     {
       "id": 6,
-      "name": "Baby monitor",
+      "name": "Eufy baby monitor",
       "category": "Health & Safety",
-      "purchased": false,
+      "purchased": true,
       "links": [],
       "art": "monitor",
-      "label": "Baby Monitor"
+      "label": "Baby Monitor",
+      "archived": true,
+      "notes": "Already purchased."
     },
     {
       "id": 7,
@@ -79,7 +93,8 @@
       "purchased": false,
       "links": [],
       "art": "bathtub",
-      "label": "Baby Bathtub"
+      "label": "Baby Bathtub",
+      "store": "Babylist"
     },
     {
       "id": 8,
@@ -88,7 +103,8 @@
       "purchased": true,
       "links": [],
       "art": "hooded-towel",
-      "label": "Soft Hooded\nTowels"
+      "label": "Soft Hooded\nTowels",
+      "store": "Target"
     },
     {
       "id": 9,
@@ -97,30 +113,35 @@
       "purchased": false,
       "links": [],
       "art": "washcloths",
-      "label": "Washcloths"
+      "label": "Washcloths",
+      "store": "Target"
     },
     {
       "id": 10,
       "name": "Baby shampoo / body wash",
       "category": "Bath & Care",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 11,
       "name": "Baby lotion",
       "category": "Bath & Care",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 12,
-      "name": "High Chair with New Born Set",
+      "name": "Stokke high chair with newborn set",
       "category": "Feeding",
-      "purchased": false,
+      "purchased": true,
       "links": [
         "https://www.stokke.com/USA/en-us/high-chairs/tripp-trapp/stokke-tripp-trapp-complete.html?5289_0=pid%3D5289"
-      ]
+      ],
+      "archived": true,
+      "notes": "Already purchased."
     },
     {
       "id": 13,
@@ -129,7 +150,8 @@
       "purchased": false,
       "links": [],
       "art": "play-gym",
-      "label": "Play Gym"
+      "label": "Play Gym",
+      "store": "Babylist"
     },
     {
       "id": 14,
@@ -138,30 +160,34 @@
       "purchased": false,
       "links": [],
       "art": "diaper-bag",
-      "label": "Diaper Bag"
+      "label": "Diaper Bag",
+      "store": "Babylist"
     },
     {
       "id": 15,
-      "name": "Changing table",
+      "name": "Amazon changing station",
       "category": "Diapering",
       "purchased": false,
       "links": [],
       "art": "changing-table",
-      "label": "Changing Table"
+      "label": "Changing Station",
+      "store": "Amazon"
     },
     {
       "id": 16,
       "name": "Portable changing pad",
       "category": "Diapering",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Amazon"
     },
     {
       "id": 17,
       "name": "10 × Leggings or elastic-waist pants",
       "category": "Clothing",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 18,
@@ -170,21 +196,24 @@
       "purchased": false,
       "links": [],
       "art": "footed-pajamas",
-      "label": "Footed Pajamas"
+      "label": "Footed Pajamas",
+      "store": "Target"
     },
     {
       "id": 19,
       "name": "10 × Socks",
       "category": "Clothing",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 20,
       "name": "10 × Short-sleeve onesies",
       "category": "Clothing",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 21,
@@ -193,42 +222,50 @@
       "purchased": true,
       "links": [],
       "art": "onesies",
-      "label": "Long-Sleeve\nOnesies"
+      "label": "Long-Sleeve\nOnesies",
+      "store": "Target"
     },
     {
       "id": 22,
       "name": "8 × Non-footed pajamas",
       "category": "Clothing",
       "purchased": true,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 23,
       "name": "5 × Swaddling blankets",
       "category": "Nursery",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Babylist",
+      "art": "swaddles",
+      "label": "Swaddling Blankets"
     },
     {
       "id": 24,
       "name": "5 × Burp cloths",
       "category": "Feeding",
       "purchased": true,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 25,
       "name": "5 × Bibs",
       "category": "Feeding",
       "purchased": true,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 26,
       "name": "3 × Lightweight sweaters or zip-up hoodies",
       "category": "Clothing",
       "purchased": true,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 27,
@@ -237,35 +274,40 @@
       "purchased": true,
       "links": [],
       "art": "sleep-sacks",
-      "label": "Sleep Sacks"
+      "label": "Sleep Sacks",
+      "store": "Babylist"
     },
     {
       "id": 28,
       "name": "2 × Sun hats",
       "category": "Clothing",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 29,
       "name": "1 × Soft hat",
       "category": "Clothing",
       "purchased": true,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 30,
       "name": "1 × Coming-home-from-hospital outfit",
       "category": "Clothing",
       "purchased": true,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 31,
       "name": "Baby-safe laundry detergent",
       "category": "Bath & Care",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 32,
@@ -274,14 +316,16 @@
       "purchased": false,
       "links": [],
       "art": "diapers",
-      "label": "Diapers"
+      "label": "Diapers",
+      "store": "Target"
     },
     {
       "id": 33,
       "name": "Diaper pail",
       "category": "Diapering",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Target"
     },
     {
       "id": 34,
@@ -290,7 +334,8 @@
       "purchased": false,
       "links": [],
       "art": "wipes",
-      "label": "Wipes"
+      "label": "Wipes",
+      "store": "Target"
     },
     {
       "id": 35,
@@ -299,7 +344,8 @@
       "purchased": false,
       "links": [],
       "art": "ointment",
-      "label": "Diaper Ointment"
+      "label": "Diaper Ointment",
+      "store": "Target"
     },
     {
       "id": 36,
@@ -322,7 +368,8 @@
       "name": "Nursing pillow",
       "category": "Feeding",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Babylist"
     },
     {
       "id": 39,
@@ -331,21 +378,24 @@
       "purchased": true,
       "links": [],
       "art": "nursing-bras",
-      "label": "Nursing Bras"
+      "label": "Nursing Bras",
+      "store": "Babylist"
     },
     {
       "id": 40,
       "name": "Nipple cream",
       "category": "Feeding",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Babylist"
     },
     {
       "id": 41,
       "name": "Nursing cover",
       "category": "Feeding",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Amazon"
     },
     {
       "id": 42,
@@ -354,21 +404,24 @@
       "purchased": false,
       "links": [],
       "art": "bottles",
-      "label": "Baby Bottles"
+      "label": "Baby Bottles",
+      "store": "Amazon"
     },
     {
       "id": 43,
       "name": "Bottle nipples",
       "category": "Feeding",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Amazon"
     },
     {
       "id": 44,
       "name": "Bottle brushes",
       "category": "Feeding",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Amazon"
     },
     {
       "id": 45,
@@ -377,7 +430,8 @@
       "purchased": false,
       "links": [],
       "art": "drying-rack",
-      "label": "Bottle Drying Rack"
+      "label": "Bottle Drying Rack",
+      "store": "Amazon"
     },
     {
       "id": 46,
@@ -386,7 +440,8 @@
       "purchased": true,
       "links": [],
       "art": "nail-trimmer",
-      "label": "Baby Nail Trimmer"
+      "label": "Baby Nail Trimmer",
+      "store": "Amazon"
     },
     {
       "id": 47,
@@ -395,28 +450,32 @@
       "purchased": true,
       "links": [],
       "art": "thermometer",
-      "label": "Thermometer"
+      "label": "Thermometer",
+      "store": "Amazon"
     },
     {
       "id": 48,
       "name": "Saline nasal drops",
       "category": "Health & Safety",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Amazon"
     },
     {
       "id": 49,
       "name": "Suction bulb",
       "category": "Health & Safety",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Amazon"
     },
     {
       "id": 50,
       "name": "Mylicon gas drops",
       "category": "Health & Safety",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Amazon"
     },
     {
       "id": 51,
@@ -425,14 +484,16 @@
       "purchased": false,
       "links": [],
       "art": "soft-books",
-      "label": "Soft Books"
+      "label": "Soft Books",
+      "store": "Babylist"
     },
     {
       "id": 52,
       "name": "Teething toys",
       "category": "Playtime",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Babylist"
     },
     {
       "id": 53,
@@ -441,14 +502,16 @@
       "purchased": false,
       "links": [],
       "art": "rattles",
-      "label": "Rattles"
+      "label": "Rattles",
+      "store": "Babylist"
     },
     {
       "id": 54,
       "name": "Stuffed animals",
       "category": "Playtime",
       "purchased": false,
-      "links": []
+      "links": [],
+      "store": "Babylist"
     },
     {
       "id": 55,
@@ -457,7 +520,8 @@
       "purchased": false,
       "links": [],
       "art": "lovey",
-      "label": "Lovey Blanket"
+      "label": "Lovey Blanket",
+      "store": "Babylist"
     }
   ],
   "categories": [
@@ -465,18 +529,12 @@
       "id": "travel",
       "name": "Travel",
       "featured": [
-        0,
-        1,
         14
       ],
       "art": [
-        "car-seat",
-        "stroller",
         "diaper-bag"
       ],
       "labels": [
-        "Infant Car Seat",
-        "Stroller",
         "Diaper Bag"
       ]
     },
@@ -484,19 +542,13 @@
       "id": "nursery",
       "name": "Nursery",
       "featured": [
-        3,
-        4,
-        5
+        23
       ],
       "art": [
-        "bassinet",
-        "sheets",
-        "mattress-protector"
+        "swaddles"
       ],
       "labels": [
-        "Bassinet",
-        "Bassinet Sheets",
-        "Waterproof\nMattress Protector"
+        "Swaddling Blankets"
       ]
     },
     {
@@ -586,18 +638,15 @@
       "name": "Health & Safety",
       "featured": [
         46,
-        47,
-        6
+        47
       ],
       "art": [
         "nail-trimmer",
-        "thermometer",
-        "monitor"
+        "thermometer"
       ],
       "labels": [
         "Baby Nail Trimmer",
-        "Thermometer",
-        "Baby Monitor"
+        "Thermometer"
       ]
     },
     {
@@ -621,6 +670,73 @@
         "Rattles",
         "Lovey Blanket"
       ]
+    }
+  ],
+  "stores": [
+    {
+      "name": "Amazon",
+      "priority": "Main",
+      "note": "Changing supplies, feeding accessories and baby care."
+    },
+    {
+      "name": "Target",
+      "priority": "Main",
+      "note": "Diapering, bath linens, laundry and clothing."
+    },
+    {
+      "name": "Babylist",
+      "priority": "Main",
+      "note": "Bath, play, sleep and nursing essentials."
+    },
+    {
+      "name": "Pottery Barn Kids",
+      "priority": "Selective",
+      "note": "Choose specific bedding, blankets, nursery textiles and decor."
+    },
+    {
+      "name": "Walmart",
+      "priority": "For free box",
+      "note": "If pursuing the welcome box, select 20 distinct items we genuinely need, such as baby-care supplies, clothing and consumables."
+    },
+    {
+      "name": "Bloomingdale's",
+      "priority": "Selective",
+      "note": "High chair purchased. Consider premium gifts when pricing or rewards beat other stores."
+    },
+    {
+      "name": "Crate & Kids",
+      "priority": "Optional",
+      "note": "Choose specific nursery decor, specialty bedding, blankets or furniture accessories."
+    },
+    {
+      "name": "Kohl's / Babies “R” Us",
+      "priority": "Optional",
+      "note": "Consider clothing, feeding accessories or nursery essentials during Kohl's promotions."
+    },
+    {
+      "name": "Macy's",
+      "priority": "Optional",
+      "note": "Consider clothing, blankets, bath sets and gifts during sales."
+    },
+    {
+      "name": "Albee Baby",
+      "priority": "Later",
+      "note": "Revisit the CYBEX convertible car seat closer to when we need it."
+    },
+    {
+      "name": "Joy",
+      "priority": "Low",
+      "note": "Add only for a specific deal or qualification."
+    },
+    {
+      "name": "Zola",
+      "priority": "Low",
+      "note": "Add only for a specific deal or qualification."
+    },
+    {
+      "name": "Bambi Baby",
+      "priority": "Low",
+      "note": "Add only for a specific deal or qualification."
     }
   ]
 }

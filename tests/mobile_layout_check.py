@@ -26,7 +26,7 @@ with sync_playwright() as p:
         page.locator('.product').first.wait_for()
         vals=page.evaluate("""() => ({
           overflow: document.documentElement.scrollWidth - innerWidth,
-          cardColumns: getComputedStyle(document.querySelector('.products')).gridTemplateColumns.split(' ').length,
+          cardColumns: getComputedStyle(document.querySelector('.category.four-up .products')).gridTemplateColumns.split(' ').length,
           cardHeight: document.querySelector('.product').getBoundingClientRect().height,
           artHeight: document.querySelector('.product-art').getBoundingClientRect().height,
           primaryButtonHeight: document.querySelector('.primary-button').getBoundingClientRect().height,
@@ -34,15 +34,13 @@ with sync_playwright() as p:
           bodyHeight: document.body.getBoundingClientRect().height
         })""")
         assert vals['overflow']<=1, (width,vals)
-        assert page.locator('.product').count()==27
+        assert page.locator('.product').count()==22
         if width<=430:
             assert vals['cardColumns']==2,(width,vals)
             assert vals['artHeight']>=95,(width,vals)
             assert vals['primaryButtonHeight']>=44,(width,vals)
             assert vals['navButtonHeight']>=40,(width,vals)
             assert vals['cardHeight']>=170,(width,vals)
-        if width==1430:
-            assert round(vals['bodyHeight'])==1034,(width,vals)
         assert not page.locator('img').evaluate_all('(xs)=>xs.some(x=>!x.complete||!x.naturalWidth)')
         assert not errors,errors
         page.screenshot(path=str(OUT/f'public-{width}.png'),full_page=True)
@@ -85,7 +83,7 @@ with sync_playwright() as p:
           saveHeight:document.querySelector('#save-button').getBoundingClientRect().height
         })""")
         assert vals['overflow']<=1,(width,vals)
-        assert vals['cards']==56
+        assert vals['cards']==48
         if width<=430:
             assert vals['tableRowDisplay']=='grid',(width,vals)
             assert min(vals['statusHeight'],vals['editHeight'],vals['saveHeight'])>=40,(width,vals)

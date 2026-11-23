@@ -182,11 +182,13 @@ function norm(item,current) {
   const links=Array.isArray(item.links)?item.links:[];
   if(links.length>6)throw Object.assign(new Error('Too many links'),{status:400});
   const validLinks=links.map(u=>text(u,1000)).filter(Boolean);
-  if(!validLinks.every(u=>{try{const v=new URL(u);return v.protocol==='https:'&&Boolean(v.hostname);}catch{return false;}}))throw Object.assign(new Error('Links must be valid HTTPS URLs'),{status:400});
+  const productUrl=text(item.productUrl??current?.productUrl??"",1000);
+  const registryUrl=text(item.registryUrl??current?.registryUrl??"",1000);
+  if(![...validLinks,productUrl,registryUrl].filter(Boolean).every(u=>{try{const v=new URL(u);return v.protocol==='https:'&&Boolean(v.hostname);}catch{return false;}}))throw Object.assign(new Error('Links must be valid HTTPS URLs'),{status:400});
   // Historical art and labels are controlled by the original design, not editable by clients.
   const cleaned={
     id,name,category:item.category,purchased:status==='received',
-    links:validLinks,quantityWanted:qty,quantityReceived:received,status,
+    store:text(item.store??current?.store??"",100),productUrl,registryUrl,links:validLinks,quantityWanted:qty,quantityReceived:received,status,
     notes:text(item.notes||'',700),archived:Boolean(item.archived)
   };
   if(current && typeof current.art==='string')cleaned.art=current.art;
@@ -203,6 +205,7 @@ function validateIncoming(input,current) {
   const normalized=input.items.map(obj=>{
     const prev=existing.get(obj.id);
     const item=norm(obj,prev);
+    if(item.store && !(current.stores||[]).some(s=>s.name===item.store))throw Object.assign(new Error('Unknown registry'),{status:400});
     if(ids.has(item.id))throw Object.assign(new Error('Duplicate item ID'),{status:400});
     ids.add(item.id);
     if(!prev && item.id<=maxOld)throw Object.assign(new Error('New items need new IDs'),{status:400});
@@ -211,7 +214,7 @@ function validateIncoming(input,current) {
     return item;
   });
   if([...existing.keys()].some(id=>!ids.has(id)))throw Object.assign(new Error('Please archive items instead of deleting them'),{status:400});
-  return {items:normalized,categories:current.categories};
+  return {...current,items:normalized};
 }
 module.exports=async function handler(req,res) {
   const action=typeof req.query?.action==='string'?req.query.action:'';

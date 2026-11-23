@@ -98,7 +98,7 @@
     form.elements.wanted.value=i.quantityWanted;
     form.elements.received.value=i.quantityReceived;
     form.elements.status.value=statusOf(i);
-    form.elements.links.value=(i.links||[]).join('\n');
+    for(const field of ['store','productUrl','registryUrl'])form.elements[field].value=i[field]||'';
     form.elements.notes.value=i.notes||'';
     form.elements.archived.checked=Boolean(i.archived);
     const featuredItem=selectedId!==null&&featured.has(selectedId);
@@ -117,12 +117,14 @@
     const wanted=Number(form.elements.wanted.value),qty=Number(form.elements.received.value);
     let status=form.elements.status.value;
     const name=form.elements.name.value.trim();
-    const links=form.elements.links.value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+    const store=form.elements.store.value;
+    const productUrl=form.elements.productUrl.value.trim();
+    const registryUrl=form.elements.registryUrl.value.trim();
     function invalid(msg){$('#edit-error').textContent=msg;$('#edit-error').hidden=false;}
     if(!name)return invalid('Please enter an item name.');
     if(!Number.isInteger(wanted)||wanted<1||wanted>1000)return invalid('Quantity needed must be between 1 and 1000.');
     if(!Number.isInteger(qty)||qty<0||qty>wanted)return invalid('Quantity received must be between 0 and the needed amount.');
-    if(links.length>6||links.some(x=>{try{return new URL(x).protocol!=='https:';}catch{return true;}}))return invalid('Use up to six valid HTTPS shopping links, one per line.');
+    if([productUrl,registryUrl].filter(Boolean).some(x=>{try{return new URL(x).protocol!=='https:';}catch{return true;}}))return invalid('Use a valid HTTPS address for each link.');
     let received=qty;
     if(status==='received')received=wanted;
     if(status==='reserved'||status==='needed')received=0;
@@ -135,7 +137,7 @@
     const id=selectedId===null?Math.max(-1,...items.map(x=>x.id))+1:selectedId;
     const updated={...(old||{}),id,name,category:old&&featured.has(id)?old.category:form.elements.category.value,
       quantityWanted:wanted,quantityReceived:received,status,purchased:status==='received',
-      links,notes:form.elements.notes.value.trim(),archived:old&&featured.has(id)?false:form.elements.archived.checked};
+      store,productUrl,registryUrl,notes:form.elements.notes.value.trim(),archived:old&&featured.has(id)?false:form.elements.archived.checked};
     if(old)items=items.map(x=>x.id===id?updated:x);
     else items=[...items,updated];
     closeEdit();render();
@@ -145,6 +147,9 @@
     clearFailure();
     const data=await request('registry');
     if(!data.registry||!Array.isArray(data.registry.items))throw Error('Received an invalid list');
+    const stores=data.registry.stores||[];
+    $('#edit-form').elements.store.innerHTML='<option value="">Unassigned</option>'+stores.map(s=>'<option>'+escape(s.name)+'</option>').join('');
+    $('#store-plan').innerHTML=stores.map(s=>'<dt><strong>'+escape(s.name)+'</strong> &middot; '+escape(s.priority)+'</dt><dd>'+escape(s.note)+'</dd>').join('');
     revision=data.sha;
     featured=new Set(data.registry.categories.flatMap(c=>c.featured||[]));
     items=data.registry.items.map(standardize);

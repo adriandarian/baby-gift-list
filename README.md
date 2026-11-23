@@ -16,9 +16,9 @@ Open `http://localhost:8000`. A local server is needed because the registry is l
 
 ## Content and behavior
 
-- All 56 original registry entries and their shopping links are preserved in `data/registry.json`.
-- The 12 purchased entries remain purchased. Homepage progress and category counts are computed from this real data, not the illustrative numbers in the concept.
-- The homepage shows the exact 27 featured products from the approved reference, with three- and four-product cards kept on one row.
+- The public list contains 48 gifts. Amazon, Target and Babylist have 46 assignments between them. The breast pump and extra parts are unassigned. Eight entries handled separately are archived.
+- Choose **Browse by registry** to shop by store. In the manager, **Registry plan** lists all 13 stores and their priorities. Stores appear in guest browsing when they have active items.
+- In **Add a gift** or **Edit**, select the registry and enter the official product page and the item link on that registry. Each HTTPS address is optional while planning. After saving, guests see a separate button for each available link.
 - Category links, the Gift List navigation item, and purchased/needed counters open searchable, filterable gift browsing dialogs.
 - Product cards open details and external shopping links. The share controls use native sharing or copy the website address.
 - Purchase status is maintained by the owner. The site does not automatically detect external purchases or provide shared gift reservations.
@@ -29,7 +29,7 @@ Open `http://localhost:8000`. A local server is needed because the registry is l
 
 `assets/approved/` contains optimized WebP crops of that exact source: original woodland surroundings, flowers, trees, animals, wooden signs, product artwork, and hand-lettered headings. These are separate assets used with semantic HTML, live text, real controls, and registry data. The website is not a single image with click hotspots.
 
-`assets/approved/manifest.json` records source coordinates and file sizes. No substitute emoji, newly drawn foliage, or later generated concept variants are used on the homepage. The hero and footer artwork have their UI text removed so real content can be rendered independently. Original branded lettering is retained as accessible image headings.
+`assets/approved/manifest.json` records source coordinates and file sizes. The registry directory and swaddling blankets use assets/registry-basket.webp. Built-in ImageGen prompt: Use case: illustration-story. Small watercolor vignette for a woodland baby registry directory. A wicker basket of folded sage baby blankets with an ivory bow, on warm ivory paper, airy margins, delicate storybook brushwork, no lettering. The hero and footer artwork have their UI text removed so real content can be rendered independently. Original branded lettering is retained as accessible image headings.
 
 At desktop widths the layout follows the reference's measured proportions across the entire viewport. Tablet and phone breakpoints reflow the same content and artwork; there is no separate approved mobile reference.
 

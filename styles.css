@@ -31,3 +31,5 @@ dialog{font:15px/1.5 Arial,Helvetica,sans-serif;color:var(--ink);border:1px soli
 /* Additional gift states share the approved card dimensions and typography. */
 .status.reserved{color:#795f2a;background:linear-gradient(#fff0cf,#f9e4b8)}
 .status.partial{color:#3e6480;background:linear-gradient(#e6f1f9,#d7e9f3)}
+
+.products:has(.product:only-child){grid-template-columns:minmax(0,125px);justify-content:center}.registry-entry{display:flex;align-items:center;gap:10px;margin:0 auto 16px;padding:0 18px 0 0;border:1px solid #c8bb9e;border-radius:12px;overflow:hidden;background:#fff9ed;color:#51442e;font:inherit;font-weight:600;cursor:pointer}.registry-entry img{width:68px;height:46px;object-fit:cover}.store-list{display:grid;gap:10px}.store-list button{text-align:left;padding:12px 16px;background:#fbf6eb;color:inherit;border:1px solid #d7c7ab;border-radius:10px;font:inherit;cursor:pointer}.store-list small{display:block;margin-top:4px}.shop-link{margin:4px}

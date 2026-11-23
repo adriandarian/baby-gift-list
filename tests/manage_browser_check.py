@@ -36,19 +36,22 @@ with sync_playwright() as p:
   page.locator('#login-form button[type=submit]').click()
   page.locator('#manager-panel').wait_for(state='visible',timeout=10000)
   page.locator('#items-body tr').first.wait_for(state='visible',timeout=10000)
-  assert page.locator('#items-body tr').count()==56
-  page.locator('#search').fill('stroller')
+  assert page.locator('#items-body tr').count()==48
+  page.locator('#search').fill('onesies')
   assert page.locator('#items-body tr').count()==2
   page.locator('#search').fill('')
-  page.locator('#items-body [data-status="1"]').select_option('reserved')
+  page.locator('#items-body [data-status="7"]').select_option('reserved')
   assert not page.locator('#save-button').is_disabled()
-  assert page.locator('#items-body [data-status="1"]').input_value()=='reserved'
+  assert page.locator('#items-body [data-status="7"]').input_value()=='reserved'
   page.locator('#add-button').click()
   assert page.locator('#edit-dialog').is_visible()
   page.locator('#edit-form [name=name]').fill('Extra baby bib set')
+  page.locator('[name=store]').select_option('Babylist')
+  page.locator('[name=productUrl]').fill('https://example.com/product')
+  page.locator('[name=registryUrl]').fill('https://example.com/registry/item')
   page.locator('#edit-form [name=wanted]').fill('3')
   page.locator('#edit-form [type=submit]').click()
-  assert page.locator('#items-body tr').count()==57
+  assert page.locator('#items-body tr').count()==49
   assert page.locator('#save-button').is_enabled()
   assert not page.evaluate('document.documentElement.scrollWidth > innerWidth')
   assert not errors,errors

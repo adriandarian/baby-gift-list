@@ -31,18 +31,19 @@ with sync_playwright() as p:
         page.wait_for_selector('.product')
         page.evaluate('document.fonts.ready')
         assert page.locator('.category').count()==8
-        assert page.locator('.product').count()==27
+        assert page.locator('.product').count()==22
         assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),f'Overflow at {width}px'
         assert not page.locator('img').evaluate_all('(imgs)=>imgs.some(x=>!x.complete||!x.naturalWidth)'),f'Missing image at {width}px'
         assert not errors,errors
-        if width==1430: assert page.locator('body').bounding_box()['height']==1034
         page.screenshot(path=str(output/f'after-{width}.png'),full_page=True)
-        info={'width':width,'httpStatus':response.status,'height':page.locator('body').bounding_box()['height'],'horizontalOverflow':False,'missingImages':0,'javascriptErrors':errors,'visibleProducts':27}
+        info={'width':width,'httpStatus':response.status,'height':page.locator('body').bounding_box()['height'],'horizontalOverflow':False,'missingImages':0,'javascriptErrors':errors,'visibleProducts':22}
         if width in (1430,390):
-            page.locator('.product').first.click()
+            page.locator('.registry-entry').click()
+            page.locator('[data-store="Amazon"]').click()
+            assert page.locator('.dialog-gift').count()==12
+            page.locator('.dialog-gift').first.click()
             assert page.locator('dialog[open]').count()==1
-            assert page.locator('.shop-link').count()==2
-            assert all(link.startswith('https://') for link in page.locator('.shop-link').evaluate_all('(xs)=>xs.map(x=>x.href)'))
+            assert page.locator('.shop-link').count()==0
             page.keyboard.press('Escape')
             assert page.locator('dialog[open]').count()==0
             assert page.locator('dialog[open]').count()==0
@@ -51,7 +52,7 @@ with sync_playwright() as p:
             page.keyboard.press('Escape')
             assert page.locator('dialog[open]').count()==0
             page.locator('[data-category="feeding"]').click()
-            assert page.locator('.dialog-gift').count()==13
+            assert page.locator('.dialog-gift').count()==12
             page.locator('#gift-search').fill('bottles')
             assert page.locator('.dialog-gift').count()==1
             page.screenshot(path=str(output/f'gift-browser-{width}.png'))
@@ -60,8 +61,19 @@ with sync_playwright() as p:
             page.locator('#tips-button').click()
             assert page.locator('dialog[open]').count()==1
             page.locator('.close-dialog').click()
-            info['interactionTests']={'productDetails':True,'storeLinks':True,'escapeAndClose':True,'purchasedFilter':12,'feedingCategory':13,'search':True,'tipsDialog':True}
+            info['interactionTests']={'productDetails':True,'storeLinks':True,'escapeAndClose':True,'purchasedFilter':12,'feedingCategory':12,'search':True,'tipsDialog':True}
         results.append(info)
+        page.close()
+    if not args.base_url:
+        page=browser.new_page()
+        sample=json.loads((root/'data/registry.json').read_text(encoding='utf-8'))
+        item=next(i for i in sample['items'] if i['id']==42)
+        item.update(productUrl='https://brand.example/bottles', registryUrl='https://registry.example/family/bottles')
+        page.route('**/data/registry.json',lambda route:route.fulfill(json=sample))
+        page.goto(base_url)
+        page.locator('.product[data-item="42"]').click()
+        assert page.get_by_role('link',name='Official product page').get_attribute('href')==item['productUrl']
+        assert page.get_by_role('link',name='View on Amazon registry').get_attribute('href')==item['registryUrl']
         page.close()
     browser.close()
 if server:server.shutdown()

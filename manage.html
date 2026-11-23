@@ -68,6 +68,7 @@
         <span id="save-message" role="status">No unsaved changes</span>
         <button class="btn primary" id="save-button" type="button" disabled>Save changes</button>
       </div>
+      <details><summary>Registry plan</summary><dl id="store-plan"></dl></details>
       <p class="privacy-note"><strong>Privacy:</strong> Gift names, categories, links, and notes are saved to a public GitHub repository, so please don't record private addresses, phone numbers, or other sensitive information. New gifts appear in “View all” on the public site without changing the approved homepage artwork. Changes are visible after Vercel redeploys.</p>
     </div>
     <p class="error-message" id="error-banner" role="alert" hidden></p>
@@ -86,7 +87,9 @@
         </select></label>
         <label>Quantity received<input name="received" type="number" min="0" max="1000"></label>
       </div>
-      <label>Shopping links <span class="muted">(one HTTPS link per line)</span><textarea name="links" rows="3" placeholder="https://example.com/baby-gift"></textarea></label>
+      <label>Registry<select name="store"></select></label>
+      <label>Official product page<input type="url" name="productUrl" placeholder="https://" maxlength="1000"></label>
+      <label>Item on baby registry<input type="url" name="registryUrl" placeholder="https://" maxlength="1000"></label>
       <label>Notes <span class="muted">(public; no personal details)</span><textarea name="notes" rows="3" maxlength="700" placeholder="Color, size or preferences"></textarea></label>
       <label class="checkbox-line" id="archive-line"><input name="archived" type="checkbox"> Archive this item <span class="muted">(hide it from the public list)</span></label>
       <p class="hint" id="featured-note" hidden>This gift is pictured in the approved homepage design, so its category and archive setting are fixed. You can still update its status and quantities.</p>

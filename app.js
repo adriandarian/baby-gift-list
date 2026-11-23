@@ -2,7 +2,7 @@
 (() => {
   const $ = selector => document.querySelector(selector);
   const escapeHtml = value => String(value).replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
-  const art = name => `assets/approved/${name}.webp`;
+  const art = name => name==='product-swaddles'?'assets/registry-basket.webp':`assets/approved/${name}.webp`;
   const check = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8 3 3 7-8"/></svg>';
   let registry = null;
   let browseState = {category:'all',status:'all',query:''};
@@ -39,27 +39,28 @@
     $('#progress-percent').textContent=`${percent}%`;
     $('#progress-fill').style.width=`${percent}%`;
     $('.progress-track').setAttribute('aria-valuenow',String(percent));
-    $('.progress-track').setAttribute('aria-valuetext',`${purchased} of ${items.length} gifts purchased`);
+    $('.progress-track').setAttribute('aria-valuetext',`${purchased} of ${active.length} gifts purchased`);
     $('#purchased-count').textContent=purchased;
     $('#needed-count').textContent=active.length-purchased;
     $('#categories').innerHTML=categories.map(category=>{
       const gifts=category.featured.map(id=>items.find(item=>item.id===id));
       const count=active.filter(item=>item.category===category.name).length;
-      return `<article class="category${gifts.length===4?' four-up':''}" aria-labelledby="heading-${category.id}"><div class="category-heading"><h3 id="heading-${category.id}"><span class="category-icon" aria-hidden="true"><img src="${art('heading-'+category.id)}" alt=""></span><span class="category-title-text">${escapeHtml(category.name)}</span></h3><span class="category-count">${count} items</span></div><div class="products" style="--columns:${gifts.length}">${gifts.map(item=>`<button class="product" type="button" data-item="${item.id}" aria-label="${escapeHtml(item.name)} — ${item.purchased?'purchased':'still needed'}"><img class="product-art" src="${art('product-'+item.art)}" width="105" height="90" alt="" decoding="async"><span class="product-name">${escapeHtml(item.label)}</span>${badge(item)}</button>`).join('')}</div><button class="category-more" type="button" data-category="${category.id}">View all ${escapeHtml(category.name.toLowerCase())} items <span class="arrow" aria-hidden="true">→</span></button></article>`;
+      if(!count)return '';
+      return `<article class="category${gifts.length===4?' four-up':''}" aria-labelledby="heading-${category.id}"><div class="category-heading"><h3 id="heading-${category.id}"><span class="category-icon" aria-hidden="true"><img src="${art('heading-'+category.id)}" alt=""></span><span class="category-title-text">${escapeHtml(category.name)}</span></h3><span class="category-count">${count} item${count===1?'':'s'}</span></div><div class="products" style="--columns:${gifts.length}">${gifts.map(item=>`<button class="product" type="button" data-item="${item.id}" aria-label="${escapeHtml(item.name)} — ${item.purchased?'purchased':'still needed'}"><img class="product-art" src="${art('product-'+item.art)}" width="105" height="90" alt="" decoding="async"><span class="product-name">${escapeHtml(item.label)}</span>${badge(item)}</button>`).join('')}</div><button class="category-more" type="button" data-category="${category.id}">View all ${escapeHtml(category.name.toLowerCase())} items <span class="arrow" aria-hidden="true">→</span></button></article>`;
     }).join('');
   }
   function renderBrowseResults() {
     const query=browseState.query.trim().toLowerCase();
     const category=registry.categories.find(c=>c.id===browseState.category);
-    const visible=registry.items.filter(item=>!item.archived&&(!category||item.category===category.name)&&(!query||(item.name+' '+item.category).toLowerCase().includes(query))&&(browseState.status==='all'||(browseState.status==='purchased'?statusOf(item)==='received':statusOf(item)!=='received')));
+    const visible=registry.items.filter(item=>!item.archived&&(!browseState.store||item.store===browseState.store)&&(!category||item.category===category.name)&&(!query||(item.name+' '+item.category).toLowerCase().includes(query))&&(browseState.status==='all'||(browseState.status==='purchased'?statusOf(item)==='received':statusOf(item)!=='received')));
     $('#result-count').textContent=`${visible.length} gift${visible.length===1?'':'s'}`;
     $('#browse-results').innerHTML=visible.map(item=>`<button class="dialog-gift" type="button" data-item="${item.id}">${item.art?`<img src="${art('product-'+item.art)}" alt="" loading="lazy">`:'<span class="placeholder" aria-hidden="true">From our gift list</span>'}<span>${escapeHtml(item.name)}</span>${badge(item)}</button>`).join('')||'<p>No gifts match these filters.</p>';
   }
-  function browse(category='all',status='all',preserve=false) {
+  function browse(category='all',status='all',preserve=false,store='') {
     if (!registry) {notify('The gift list is still loading. Please try again.');return;}
-    if(!preserve) browseState={category,status,query:''};
+    if(!preserve) browseState={category,status,store,query:''};
     const categoryName=registry.categories.find(c=>c.id===browseState.category)?.name;
-    showDialog(categoryName||'Our gift list',`<p>Choose a gift to view its details and shopping links.</p><div class="dialog-toolbar"><input type="search" id="gift-search" placeholder="Search gifts…" aria-label="Search gifts" value="${escapeHtml(browseState.query)}"><select id="gift-status" aria-label="Filter gifts"><option value="all">All gifts</option><option value="needed">Still needed</option><option value="purchased">Purchased</option></select></div><p id="result-count" aria-live="polite"></p><div class="dialog-results" id="browse-results"></div><p class="dialog-note">Purchases at external stores do not automatically update this list. Please let us know when you buy a gift so we can prevent duplicates.</p>`);
+    showDialog(browseState.store||categoryName||'Our gift list',`${browseState.store?'<button class="back-link" type="button" data-registries>Back to registries</button>':''}<p>Choose a gift to view its details and shopping links.</p><div class="dialog-toolbar"><input type="search" id="gift-search" placeholder="Search gifts…" aria-label="Search gifts" value="${escapeHtml(browseState.query)}"><select id="gift-status" aria-label="Filter gifts"><option value="all">All gifts</option><option value="needed">Still needed</option><option value="purchased">Purchased</option></select></div><p id="result-count" aria-live="polite"></p><div class="dialog-results" id="browse-results"></div><p class="dialog-note">Purchases at external stores do not automatically update this list. Please let us know when you buy a gift so we can prevent duplicates.</p>`);
     $('#gift-status').value=browseState.status;
     $('#gift-search').addEventListener('input',event=>{browseState.query=event.target.value;renderBrowseResults();});
     $('#gift-status').addEventListener('change',event=>{browseState.status=event.target.value;renderBrowseResults();});
@@ -68,8 +69,8 @@
   function showItem(id) {
     const item=registry?.items.find(item=>item.id===id);if(!item)return;
     const cameFromBrowse=Boolean($('#browse-results'))||returnToBrowse;
-    const links=item.links.filter(link=>{try{return new URL(link).protocol==='https:';}catch{return false;}});
-    showDialog('Gift details',`${cameFromBrowse?'<button class="back-link" id="back-to-results" type="button">← Back to gifts</button>':''}${item.art?`<img class="detail-art" src="${art('product-'+item.art)}" alt="Illustration of ${escapeHtml(item.label.replace(/\n/g,' '))}">`:''}<p class="detail-category">${escapeHtml(item.category)} · ${item.purchased?'Already purchased':'Still needed'}</p><h3 class="detail-name">${escapeHtml(item.name)}</h3>${item.quantityWanted?`<p class="detail-category">Received ${item.quantityReceived||0} of ${item.quantityWanted}</p>`:''}${item.notes?`<p class="dialog-note">${escapeHtml(item.notes)}</p>`:''}<p>${item.purchased?'This gift has already been purchased. Thank you for helping us get ready!':'This item is on our wishlist. Thank you for thinking of our growing family!'}</p><div>${links.map((link,index)=>`<a class="shop-link" href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">${links.length>1?'View product option '+(index+1):'View product'} ↗</a>`).join('')}</div>${!links.length?'<p class="dialog-note">A specific store or product has not been selected for this item. Please check with us before buying.</p>':''}<p class="dialog-note">Artwork is illustrative. Use the store link for the exact product, price, size, and availability. Please notify us after buying; this list does not automatically track store purchases.</p><button class="dialog-action secondary" type="button" data-close>Back to the website</button>`);
+    const links=[[item.productUrl,"Official product page"],[item.registryUrl,item.store?"View on "+item.store+" registry":"View on baby registry"],...(item.links||[]).map((url,index)=>[url,"Product option "+(index+1)])].filter(([link])=>{try{return new URL(link).protocol==='https:';}catch{return false;}});
+    showDialog('Gift details',`${cameFromBrowse?'<button class="back-link" id="back-to-results" type="button">← Back to gifts</button>':''}${item.art?`<img class="detail-art" src="${art('product-'+item.art)}" alt="Illustration of ${escapeHtml(item.label.replace(/\n/g,' '))}">`:''}<p class="detail-category">${escapeHtml([item.store,item.category].filter(Boolean).join(" / "))} · ${item.purchased?'Already purchased':'Still needed'}</p><h3 class="detail-name">${escapeHtml(item.name)}</h3>${item.quantityWanted?`<p class="detail-category">Received ${item.quantityReceived||0} of ${item.quantityWanted}</p>`:''}${item.notes?`<p class="dialog-note">${escapeHtml(item.notes)}</p>`:''}<p>${item.purchased?'This gift has already been purchased. Thank you for helping us get ready!':'This item is on our wishlist. Thank you for thinking of our growing family!'}</p><div>${links.map(([link,label])=>`<a class="shop-link" href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)} ↗</a>`).join('')}</div>${!links.length?'<p class="dialog-note">Shopping links are coming soon. Please check with us before buying.</p>':''}<p class="dialog-note">Artwork is illustrative. Use the store link for the exact product, price, size, and availability. Please notify us after buying; this list does not automatically track store purchases.</p><button class="dialog-action secondary" type="button" data-close>Back to the website</button>`);
     $('#back-to-results')?.addEventListener('click',()=>browse(browseState.category,browseState.status,true));
   }
   async function share() {
@@ -86,6 +87,11 @@
     const target=event.target.closest('button,a');if(!target)return;
     if(target.hasAttribute('data-share')){event.preventDefault();share();}
     else if(target.hasAttribute('data-browse')){const status=target.dataset.browse;returnToBrowse=false;browse('all',status==='all'?'all':status);}
+    else if(target.hasAttribute('data-registries')&&registry){
+      const stores=(registry.stores||[]).filter(s=>registry.items.some(i=>!i.archived&&i.store===s.name));
+      showDialog('Our registries','<div class="store-list">'+stores.map(s=>'<button type="button" data-store="'+escapeHtml(s.name)+'"><strong>'+escapeHtml(s.name)+'</strong><small>'+escapeHtml(s.note)+'</small></button>').join('')+'</div>');
+    }
+    else if(target.hasAttribute('data-store'))browse('all','all',false,target.dataset.store);
     else if(target.hasAttribute('data-category')){returnToBrowse=false;browse(target.dataset.category);}
     else if(target.hasAttribute('data-item')){if(!dialog.open)returnToBrowse=false;showItem(Number(target.dataset.item));}
     else if(target.hasAttribute('data-close')||target.classList.contains('close-dialog'))closeDialog();
